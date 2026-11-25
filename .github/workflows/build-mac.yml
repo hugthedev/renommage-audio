@@ -1,0 +1,24 @@
+name: Construire l'app macOS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lancer les tests du moteur
+        run: swift test
+
+      - name: Construire l'application
+        run: chmod +x scripts/make_app.sh && ./scripts/make_app.sh
+
+      - name: Publier le fichier téléchargeable
+        uses: actions/upload-artifact@v4
+        with:
+          name: Renommage-Audio-macOS
+          path: dist/Renommage-Audio-macOS.zip
